@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer QR Generator</title>
+    <link rel="stylesheet" href="qr.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>🌾 Farmer QR Generator</h1>
+            <p>Generate, Download & Push Farmer Registry QR Codes</p>
+        </div>
+
+        <textarea id="farmerData">
+            Farmer Name: Ram Lakhan
+            Identifier Name: Liladhar
+            Farmer ID: 83173402376
+            Village: Hasanabad
+            DOB: 01/01/1987
+            Category: OBC
+        </textarea>
+
+        <br>
+
+        <div class="btn-group">
+            <button class="generate-btn" onclick="generateQR()">
+                Generate QR Code
+            </button>
+
+            <button class="download-btn" onclick="downloadQR()">
+                Download QR
+            </button>
+
+            <button class="generate-btn" onclick="pushQR()">
+                📌 Push QR To Card
+        </div>
+        </button>
+
+        <div id="qrcode"></div>
+
+        <div class="footer">
+            Farmer Registry QR Generator Engine © 2026
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+
+        let qr;
+
+function generateQR() {
+
+    let data = document.getElementById("farmerData").value.trim();
+
+    if (!data) {
+        alert("Please enter data");
+        return;
+    }
+
+    // Text ko JSON object me convert karo
+    let qrData = {};
+
+    data.split('\n').forEach(line => {
+
+        if (line.includes(':')) {
+
+            let parts = line.split(':');
+
+            let key = parts[0]
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '_');
+
+            let value = parts.slice(1).join(':').trim();
+
+            qrData[key] = value;
+        }
+    });
+
+    document.getElementById("qrcode").innerHTML =
+        '<canvas id="qrCanvas"></canvas>';
+
+    qr = new QRious({
+        element: document.getElementById("qrCanvas"),
+        value: JSON.stringify(qrData, null, 2),
+        size: 500,
+        level: 'H',
+        padding: 6
+    });
+}
+
+        function downloadQR() {
+
+            const canvas = document.getElementById("qrCanvas");
+
+            if (!canvas) {
+                alert("Generate QR First");
+                return;
+            }
+
+            const link = document.createElement("a");
+
+            link.download = "Farmer_QR.png";
+
+            link.href = canvas.toDataURL("image/png");
+
+            link.click();
+        }
+
+        function pushQR() {
+
+            const canvas = document.getElementById("qrCanvas");
+
+            if (!canvas) {
+                alert("Generate QR First");
+                return;
+            }
+
+            localStorage.setItem(
+                "farmer_qr_image",
+                canvas.toDataURL("image/png")
+            );
+
+            alert("QR Pushed Successfully");
+        }
+
+        window.onload = generateQR;
+
+    </script>
+
+</body>
+
+</html>

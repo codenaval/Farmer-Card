@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PVC Card Live Editor & Downloader (Photoshop & Print Optimized)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="action-buttons">
+        <button id="resetBtn" onclick="clearData()">🗑 Reset</button>
+        <button id="saveBtn" onclick="saveFormData()">💾 Save</button>
+    </div>
+
+    <div class="container">
+
+        <div class="editor-panel">
+            <h2>✏️ PVC Card Live Editor (Large Scale)</h2>
+
+            <div class="form-section">
+                <h3>Media Uploads (फोटो और क्यूआर कोड)</h3>
+
+                <div class="form-group" style="margin-bottom: 18px;">
+                    <button type="button"
+                        style="width:100%; background: linear-gradient(135deg, #024217, #0d6124); color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 10pt;"
+                        onclick="openQRGeneratorWindow()">
+                        🚀 Open Farmer Registry QR Generator Page
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Farmer Photo</label>
+                    <input type="file" id="upload-photo" accept="image/*" onchange="loadPhoto(event)">
+                </div>
+                <div class="form-group">
+                    <label>Upload QR Code</label>
+                    <input type="file" id="upload-qrcode" accept="image/*" onchange="loadQRCode(event)">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Front Side Details</h3>
+                <div class="form-group">
+                    <label>Name (Hindi)</label>
+                    <input type="text" id="input-name-hi" value="मोहन लाल" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Name (English)</label>
+                    <input type="text" id="input-name-en" value="Mohan Lal" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Gender / लिंग</label>
+                    <input type="text" id="input-gender" value="पुरुष / Male" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>DOB (Date of Birth)</label>
+                    <input type="text" id="input-dob" placeholder="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="input-caste" value="General" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Area</label>
+                    <input type="text" id="input-area" value="Rural" oninput="updateCard()">
+                </div>
+                <!-- <div class="form-group">
+                    <label>Aadhaar Number</label>
+                    <input type="text" id="input-aadhaar" value="XXXXXXXX4512" oninput="updateCard()">
+                </div> -->
+
+                <div class="form-group">
+                    <label>Aadhaar Number</label>
+                    <input type="text" id="input-aadhaar" value="123456789012" oninput="updateCard()">
+                </div>
+
+                <div class="form-group">
+                    <label>Farmer ID</label>
+                    <input type="text" id="input-farmer-id" value="3693 400 8632" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>State Registry Name</label>
+                    <input type="text" id="input-registry" value="Uttar Pradesh Farmer Registry" oninput="updateCard()">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>🌾 Land Records Editor</h3>
+
+                <table class="land-input-table">
+                    <thead>
+                        <tr>
+                            <th>Dist</th>
+                            <th>Sub-Dist</th>
+                            <th>Vill</th>
+                            <th>Khasra</th>
+                            <th>Khata</th>
+                            <th>Area</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="land-inputs-body">
+
+                        <tr>
+                            <td><input type="text" class="cell-dist" value="AGRA" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-subdist" value="ETMADPUR" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-village" value="BARHAN" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-khasra" value="126" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-khata" value="00045" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-area" value="0.025" oninput="syncLandTable()"></td>
+
+                            <td><button class="btn-del-row" onclick="deleteRow(this)">❌</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" class="cell-dist" value="AGRA" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-subdist" value="ETMADPUR" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-village" value="BARHAN" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-khasra" value="126" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-khata" value="00045" oninput="syncLandTable()"></td>
+
+                            <td><input type="text" class="cell-area" value="0.228" oninput="syncLandTable()"></td>
+
+                            <td><button class="btn-del-row" onclick="deleteRow(this)">❌</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <button type="button" class="btn-add-row" onclick="addNewRow()">
+                    ➕ Add New Land Row
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h3>Back Side Details</h3>
+                <div class="form-group">
+                    <label>Full Address</label>
+                    <textarea id="input-address" rows="3"
+                        oninput="updateCard()">S/O: Prem Kumar, ward no. 10, lalgarh jatan, 8 LLG(LALGARH), Ganganagar, Rajasthan - 335037</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Download Date</label>
+                    <input type="text" id="input-download-date" placeholder="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label>Support Helpline</label>
+                    <input type="text" id="input-phone" value="☎️ 0522 2317003" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Portal URL</label>
+                    <input type="text" id="input-url" value="🌐 www.upfr.agristack.gov.in" oninput="updateCard()">
+                </div>
+            </div>
+
+            <button class="btn-download" onclick="window.print()">📥 Generate & Save A4 PDF</button>
+        </div>
+
+        <div class="preview-panel">
+            <h2>👁️ Live Preview (12cm &times; 8mm)</h2>
+            <div class="pvc-card-12x8" id="screen-front"></div>
+            <div class="pvc-card-12x8" id="screen-back"></div>
+        </div>
+    </div>
+
+    <div class="print-only-container">
+        <div class="pvc-card-12x8" id="print-front"></div>
+        <div class="pvc-card-12x8" id="print-back"></div>
+    </div>
+
+    <script>
+        const frontHTMLBlueprint = `
+            <div class="front-header">
+
+                <div class="front-leaf">
+                    <img src="assets/img/logo/leaf.png" alt="Leaf">
+                </div>
+
+                <p class="hi-title">भारत सरकार</p>
+                <p class="en-title">Government of India</p>
+                <div class="emblem-img">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem">
+                </div>
+            </div>
+            <div class="divider-line"></div>
+            <div class="photo-box">
+                <span style="font-size: 9pt; color: #888;">No Photo</span>
+            </div>
+            <table class="details-grid">
+                <tr>
+                    <td width="30%">नाम<br>Name</td>
+                    <td width="5%">:</td>
+                    <td class="field-values">CH_NAME</td>
+                </tr>
+                <tr>
+                    <td>लिंग/Gen</td>
+                    <td>:</td>
+                    <td class="field-values">CH_GENDER</td>
+                </tr>
+                <tr>
+                    <td>DOB</td>
+                    <td>:</td>
+                    <td class="field-values">CH_DOB</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>:</td>
+                    <td class="field-values">CH_CASTE</td>
+                </tr>
+                <tr>
+                    <td>Area</td>
+                    <td>:</td>
+                    <td class="field-values">CH_AREA</td>
+                </tr>
+
+                <tr>
+                    <td>Aadhaar</td>
+                    <td>:</td>
+                    <td class="field-values">CH_AADHAAR</td>
+                </tr>
+
+            </table>
+            <div class="qr-box">
+                <span style="font-size: 8pt; color: #888;">No QR</span>
+            </div>
+            <div class="farmer-id-banner">
+                Farmer ID : <span>CH_FID</span>
+            </div>
+            <div class="bottom-stripes">
+                <div class="stripe-green"></div>
+                <div class="stripe-orange"></div>
+            </div>
+            <div class="front-footer-text">CH_REGISTRY</div>
+        `;
+
+        const backHTMLBlueprint = `
+            <div class="back-header">
+                <div class="agristack-branding">
+                    <img src="assets/img/logo/Agristack_header_logo1.svg" alt="AgriStack Logo">
+                </div>
+                <div>
+                    <p class="ministry-hi">कृषि एवं किसान कल्याण मंत्रालय</p>
+                    <p class="ministry-en">Ministry of Agri & Farmers Welfare</p>
+                </div>
+                <div class="back-emblem">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Seal_of_Uttar_Pradesh.svg" alt="Emblem">
+                </div>
+            </div>
+                <div class="back-divider"></div>
+                <div class="download-stamp-center">
+                    Download Date: <span>CH_DDATE</span>
+                </div>
+                <div class="address-box">
+                    <strong>Address:</strong><br>
+                    <span>CH_ADDRESS</span>
+                </div>
+
+               <table class="land-grid-table">
+    <thead>
+        <tr>
+            <th>Dist</th>
+            <th>Sub-Dist</th>
+            <th>Vill</th>
+            <th>Khasra</th>
+            <th>Khata</th>
+            <th>Area</th>
+        </tr>
+    </thead>
+    <tbody class="land-output-rows-target"></tbody>
+</table>
+                
+                <div class="back-footer-bar">
+                    <div class="footer-item">CH_PHONE</div>
+                    <div class="footer-item">CH_URL</div>
+                </div>
+        `;
+
+        let globalPhotoSrc = null;
+        let globalQRSrc = null;
+
+        function updateCard() {
+            const nameHi = document.getElementById('input-name-hi').value;
+            const nameEn = document.getElementById('input-name-en').value;
+            const gender = document.getElementById('input-gender').value;
+            const dob = document.getElementById('input-dob').value;
+            const caste = document.getElementById('input-caste').value;
+            const area = document.getElementById('input-area').value;
+
+            // Aadhaar Masking Logic (Only last 4 digits)
+            // const rawAadhaar = document.getElementById('input-aadhaar').value;
+            // const maskedAadhaar = rawAadhaar.length > 4 ? "XXXXXXXX" + rawAadhaar.slice(-4) : rawAadhaar;
+
+            const maskedAadhaar = document.getElementById('input-aadhaar').value;
+
+            const aadhaar = document.getElementById('input-aadhaar').value;
+            const farmerId = document.getElementById('input-farmer-id').value;
+            const registry = document.getElementById('input-registry').value;
+            const address = document.getElementById('input-address').value;
+            const ddate = document.getElementById('input-download-date').value;
+            const phone = document.getElementById('input-phone').value;
+            const url = document.getElementById('input-url').value;
+
+            let frontCompiled = frontHTMLBlueprint
+                .replace('CH_NAME', nameHi + '<br>' + nameEn)
+                .replace('CH_GENDER', gender)
+                .replace('CH_DOB', dob)
+                .replace('CH_CASTE', caste)
+                .replace('CH_AREA', area)
+                .replace('CH_AADHAAR', maskedAadhaar)
+                .replace('CH_FID', farmerId)
+                .replace('CH_REGISTRY', registry);
+
+            let backCompiled = backHTMLBlueprint
+                .replace('CH_DDATE', ddate)
+                .replace('CH_ADDRESS', address)
+                .replace('CH_PHONE', phone)
+                .replace('CH_URL', url);
+
+            document.getElementById('screen-front').innerHTML = frontCompiled;
+            document.getElementById('print-front').innerHTML = frontCompiled;
+            document.getElementById('screen-back').innerHTML = backCompiled;
+            document.getElementById('print-back').innerHTML = backCompiled;
+
+            syncImagesAndTables();
+        }
+
+        function loadPhoto(event) {
+            if (event.target.files[0]) {
+                globalPhotoSrc = URL.createObjectURL(event.target.files[0]);
+                syncImagesAndTables();
+            }
+        }
+
+        function loadQRCode(event) {
+            if (event.target.files[0]) {
+                globalQRSrc = URL.createObjectURL(event.target.files[0]);
+                syncImagesAndTables();
+            }
+        }
+
+        function addNewRow() {
+
+            const tbody = document.getElementById('land-inputs-body');
+
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td><input type="text" class="cell-dist" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-subdist" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-village" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-khasra" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-khata" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-area" oninput="syncLandTable()"></td>
+                <td><button class="btn-del-row" onclick="deleteRow(this)">❌</button></td>
+    `;
+
+            tbody.appendChild(row);
+
+            syncLandTable();
+        }
+
+        function deleteRow(button) {
+            button.closest('tr').remove();
+            syncLandTable();
+        }
+
+        function syncLandTable() {
+
+            const dists = document.querySelectorAll('.cell-dist');
+            const subdists = document.querySelectorAll('.cell-subdist');
+            const villages = document.querySelectorAll('.cell-village');
+            const khasras = document.querySelectorAll('.cell-khasra');
+            const khatas = document.querySelectorAll('.cell-khata');
+            const areas = document.querySelectorAll('.cell-area');
+
+            let rowsHTML = '';
+
+            for (let i = 0; i < khatas.length; i++) {
+
+                rowsHTML += `
+                    <tr>
+                        <td>${dists[i]?.value || ''}</td>
+                        <td>${subdists[i]?.value || ''}</td>
+                        <td>${villages[i]?.value || ''}</td>
+                        <td>${khasras[i]?.value || ''}</td>
+                        <td>${khatas[i]?.value || ''}</td>
+                        <td>${areas[i]?.value || ''}</td>
+                    </tr>
+                `;
+            }
+
+            document.querySelectorAll('.land-output-rows-target')
+                .forEach(t => t.innerHTML = rowsHTML);
+        }
+
+
+
+
+        // --- NEW REALTIME CROSS-WINDOW DATA LINK ENGINE ---
+        function openQRGeneratorWindow() {
+            window.open('qr-generator.html', '_blank', 'width=700,height=800');
+        }
+
+        window.addEventListener("message", function (event) {
+            if (event.data && event.data.type === "FARMER_QR_DATA_PUSH") {
+                const farmerData = event.data.data;
+                const qrCodeImageSrc = event.data.qrImageSrc;
+
+                if (document.getElementById('input-name-hi')) document.getElementById('input-name-hi').value = farmerData.farmer_name_local || "";
+                if (document.getElementById('input-name-en')) document.getElementById('input-name-en').value = farmerData.farmer_name_en || "";
+                if (document.getElementById('input-gender')) document.getElementById('input-gender').value = (farmerData.gender === "Male" ? "पुरुष / Male" : "महिला / Female");
+                if (document.getElementById('input-dob')) document.getElementById('input-dob').value = farmerData.dob || "";
+                if (document.getElementById('input-caste')) document.getElementById('input-caste').value = farmerData.caste_category || "";
+                if (document.getElementById('input-farmer-id')) document.getElementById('input-farmer-id').value = farmerData.enrollment_no || "";
+                if (document.getElementById('input-registry')) document.getElementById('input-registry').value = farmerData.registry_name || "";
+                if (document.getElementById('input-address')) document.getElementById('input-address').value = farmerData.address_local || "";
+
+                globalQRSrc = qrCodeImageSrc;
+                updateCard();
+            }
+        }, false);
+
+        setInterval(function () {
+            const rawPayload = localStorage.getItem('shared_farmer_qr_payload');
+            if (rawPayload) {
+                try {
+                    const payload = JSON.parse(rawPayload);
+                    if (payload && payload.type === "FARMER_QR_DATA_PUSH") {
+                        window.postMessage(payload, "*");
+                        localStorage.removeItem('shared_farmer_qr_payload');
+                    }
+                } catch (e) { }
+            }
+        }, 1000);
+
+        function syncImagesAndTables() {
+
+            // PHOTO
+            document.querySelectorAll('.photo-box').forEach(box => {
+                if (globalPhotoSrc) {
+                    box.innerHTML = `<img src="${globalPhotoSrc}">`;
+                }
+            });
+
+            // QR
+            document.querySelectorAll('.qr-box').forEach(box => {
+                if (globalQRSrc) {
+                    box.innerHTML = `<img src="${globalQRSrc}">`;
+                }
+            });
+
+            // LAND TABLE
+            syncLandTable();
+        }
+
+        flatpickr("#input-dob", {
+            dateFormat: "d/m/Y",
+            defaultDate: "12/01/1992",
+            allowInput: true,
+            onChange: function () {
+                updateCard();
+            }
+        });
+
+        flatpickr("#input-download-date", {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            onChange: updateCard
+        });
+
+        window.addEventListener("load", function () {
+    const savedQR = localStorage.getItem("farmer_qr_image");
+
+    if (savedQR) {
+        globalQRSrc = savedQR;
+    }
+
+    loadFormData();
+    updateCard();
+    syncImagesAndTables();
+
+    const qrBox = document.querySelector(".qr-box");
+
+    if (qrBox && globalQRSrc) {
+        qrBox.style.padding = "0";
+        qrBox.style.margin = "0";
+
+        qrBox.innerHTML = `
+            <img src="${globalQRSrc}"
+                 style="
+                    width:100%;
+                    height:100%;
+                    display:block;
+                    object-fit:cover;
+                    margin:0;
+                    padding:0;
+                 ">
+        `;
+    }
+
+});
+
+        function saveFormData() {
+
+            const data = {};
+
+            document.querySelectorAll("input, textarea").forEach(el => {
+                if (el.id) {
+                    data[el.id] = el.value;
+                }
+            });
+
+            data.landRecords = [];
+
+            document.querySelectorAll("#land-inputs-body tr").forEach(row => {
+
+                data.landRecords.push({
+                    dist: row.querySelector(".cell-dist")?.value || "",
+                    subdist: row.querySelector(".cell-subdist")?.value || "",
+                    village: row.querySelector(".cell-village")?.value || "",
+                    khasra: row.querySelector(".cell-khasra")?.value || "",
+                    khata: row.querySelector(".cell-khata")?.value || "",
+                    area: row.querySelector(".cell-area")?.value || ""
+                });
+
+            });
+
+            localStorage.setItem(
+                "farmerCardData",
+                JSON.stringify(data)
+            );
+
+            alert("Data Saved Successfully");
+        }
+
+        function loadFormData() {
+
+            const savedData = localStorage.getItem("farmerCardData");
+
+            if (!savedData) return;
+
+            const data = JSON.parse(savedData);
+
+            Object.keys(data).forEach(id => {
+
+                if (id === "landRecords") return;
+
+                const el = document.getElementById(id);
+
+                if (el) {
+                    el.value = data[id];
+                }
+
+            });
+
+            if (data.landRecords && data.landRecords.length > 0) {
+
+                const tbody = document.getElementById("land-inputs-body");
+
+                tbody.innerHTML = "";
+
+                data.landRecords.forEach(land => {
+
+                    tbody.innerHTML += `
+            <tr>
+                <td><input type="text" class="cell-dist" value="${land.dist}" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-subdist" value="${land.subdist}" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-village" value="${land.village}" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-khasra" value="${land.khasra}" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-khata" value="${land.khata}" oninput="syncLandTable()"></td>
+                <td><input type="text" class="cell-area" value="${land.area}" oninput="syncLandTable()"></td>
+                <td><button class="btn-del-row" onclick="deleteRow(this)">❌</button></td>
+            </tr>`;
+                });
+
+            }
+
+            updateCard();
+            syncLandTable();
+        }
+
+        function clearData() {
+
+            if (confirm("Delete all saved data?")) {
+
+                localStorage.removeItem("farmerCardData");
+                location.reload();
+
+            }
+        }
+
+        window.addEventListener("load", function () {
+
+            loadFormData();
+
+            updateCard();
+
+            syncLandTable();
+
+        });
+    </script>
+</body>
+
+</html>
